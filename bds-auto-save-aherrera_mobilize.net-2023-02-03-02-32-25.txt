@@ -1,0 +1,5 @@
+ M .vscode/settings.json
+ M snowpark_extensions/functions_extensions.py
+ M tests/test_functions.py
+?? bds-auto-save-aherrera_mobilize.net-2023-02-03-02-32-25.txt
+?? snowpark_extensions/prueba.py
