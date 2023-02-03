@@ -299,8 +299,7 @@ if not hasattr(F,"___extended"):
  
     F._split_regex_function = None
     F.snowflake_split = F.split
-    def _regexp_split(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:int = -1):        
-        
+    def _regexp_split(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:int = -1):
          
         if limit == 1:                    
             return '[\''+ value +'\']'
