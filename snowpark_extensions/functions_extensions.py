@@ -296,14 +296,11 @@ if not hasattr(F,"___extended"):
 
     def is_not_a_regex(pattern):
         return not has_special_char(pattern)
- 
+
     F._split_regex_function = None
     F.snowflake_split = F.split
     def _regexp_split(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:int = -1):
          
-        if limit == 1:                    
-            return '[\''+ value +'\']'
-            
         value = _to_col_if_str(value,"split_regex")                
         
         pattern_col = pattern        
@@ -311,10 +308,6 @@ if not hasattr(F,"___extended"):
             pattern_col = lit(pattern)        
         if limit < 0 and isinstance(pattern, str) and is_not_a_regex(pattern):
             return F.snowflake_split(value, pattern_col)  
-        
-        limit = limit - 1
-        if limit < 0:
-            limit = 0      
                     
         session = context.get_active_session()
         current_database = session.get_current_database() 
@@ -332,8 +325,8 @@ $$
 import java.util.regex.Pattern;
 public class MyJavaClass {{
     public String[] regex_split_run(String input,String regex, int limit) {{
-        Pattern pattern = Pattern.compile(regex, limit);
-        return pattern.split(input);
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.split(input, limit);
     }}}}$$;""").show()
 
         return call_builtin(F._split_regex_function, value, pattern_col, limit)
