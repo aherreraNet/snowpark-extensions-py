@@ -1,0 +1,2 @@
+ M snowpark_extensions/functions_extensions.py
+?? bds-auto-save-aherrera_mobilize.net-2023-02-03-18-06-40.txt

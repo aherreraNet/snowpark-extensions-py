@@ -296,10 +296,15 @@ if not hasattr(F,"___extended"):
 
     def is_not_a_regex(pattern):
         return not has_special_char(pattern)
-
+ 
     F._split_regex_function = None
     F.snowflake_split = F.split
     def _regexp_split(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:int = -1):        
+        
+         
+        if limit == 1:                    
+            return '[\''+ value +'\']'
+            
         value = _to_col_if_str(value,"split_regex")                
         
         pattern_col = pattern        
@@ -307,11 +312,8 @@ if not hasattr(F,"___extended"):
             pattern_col = lit(pattern)        
         if limit < 0 and isinstance(pattern, str) and is_not_a_regex(pattern):
             return F.snowflake_split(value, pattern_col)  
-
-        if limit == 1:                    
-            return '[\''+ value +'\']'
-        else:
-            limit = limit - 1
+        
+        limit = limit - 1
         if limit < 0:
             limit = 0      
                     
