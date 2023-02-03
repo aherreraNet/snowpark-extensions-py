@@ -331,7 +331,7 @@ $$
 import java.util.regex.Pattern;
 public class MyJavaClass {{
     public String[] regex_split_run(String input,String regex, int limit) {{
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile(regex, limit);
         return pattern.split(input);
     }}}}$$;""").show()
 

@@ -307,7 +307,7 @@ def test_regexp_split():
     
     df = session.createDataFrame([('pruebaAylapruebaBsondosBBpruebas',)], ['s',])
 
-    res = df.select(regexp_split(df.s, "prueba(A|BB)").alias('s')).collect()
+    res = df.select(regexp_split(df.s, "prueba(A|BB)", 1 ).alias('s')).collect()
     assert res[0].S == '[\n  "",\n  "ylapruebaBsondosBBpruebas"\n]'
 
 
