@@ -299,17 +299,28 @@ if not hasattr(F,"___extended"):
 
     F._split_regex_function = None
     F.snowflake_split = F.split
-    def _regexp_split(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:ColumnOrLiteral = -1):        
-        
+    def _regexp_split(value:ColumnOrName, pattern:ColumnOrLiteralStr, limit:int = -1):        
         value = _to_col_if_str(value,"split_regex")                
-        pattern = _to_col_if_str(pattern,"split_regex_pattern")
-        if not F._split_regex_function:            
-            session = context.get_active_session()
-            current_database = session.get_current_database() 
-            function_name =_generate_prefix("_regex_split_helper")           
-            F._split_regex_function = f"{current_database}.public.{function_name}"
+        
+        pattern_col = pattern        
+        if isinstance(pattern, str):
+            pattern_col = lit(pattern)        
+        if limit < 0 and isinstance(pattern, str) and is_not_a_regex(pattern):
+            return F.snowflake_split(value, pattern_col)  
 
-            session.sql(f"""CREATE OR REPLACE FUNCTION {F._split_regex_function} ()
+        if limit == 1:                    
+            return '[\''+ value +'\']'
+        else:
+            limit = limit - 1
+        if limit < 0:
+            limit = 0      
+                    
+        session = context.get_active_session()
+        current_database = session.get_current_database() 
+        function_name =_generate_prefix("_regex_split_helper")           
+        F._split_regex_function = f"{current_database}.public.{function_name}"
+
+        session.sql(f"""CREATE OR REPLACE FUNCTION {F._split_regex_function} (input String, regex String, limit INT)
 RETURNS ARRAY
 LANGUAGE JAVA
 RUNTIME_VERSION = '11'
@@ -317,17 +328,15 @@ PACKAGES = ('com.snowflake:snowpark:latest')
 HANDLER = 'MyJavaClass.regex_split_run' 
 AS
 $$
-import com.snowflake.snowpark_java.*;
 import java.util.regex.Pattern;
 public class MyJavaClass {{
-    public String[] regex_split_run() {{
-        Pattern pattern = Pattern.compile(".+");
-        return pattern.split("hola", 1);
-		}}}}$$;"""
+    public String[] regex_split_run(String input,String regex, int limit) {{
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.split(input);
+    }}}}$$;""").show()
 
-            ).show()
+        return call_builtin(F._split_regex_function, value, pattern_col, limit)
 
-        return call_builtin(F._split_regex_function)
 
     F.array = _array
     F.array_max = _array_max

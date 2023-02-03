@@ -11,8 +11,8 @@
         "driver": "Snowflake",
         "name": "demodbConnection",
         "account": "mobilize",
-        "username": "U2FsdGVkX1/HJIbvvcpt0piYeRANOMasZSWinWZzxeZQQu0ertr7HxgN+JsAx5LR",
-        "password": "U2FsdGVkX1/1l/hZcjF9EUZBFBgPi4VXzrQx8Wyl7Jo=",
+        "username": "U2FsdGVkX18iJysqpXJyeFhc2gCitLUFAS/Z6p+cmo+D+J0Rx98EoxNfcWHmKJV8",
+        "password": "U2FsdGVkX18+mXvFfzGlzR1pegZzVE5SGAOEQTrHa2M=",
         "database": "snowpark_extensions_tests",
         "warehouse": "snowpark_analysis_wh",
         "schema": "public"
