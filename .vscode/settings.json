@@ -1,7 +1,22 @@
 {
-    "python.testing.pytestArgs": [
-        "tests"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+ "python.testing.pytestArgs": [
+  "tests"
+ ],
+ "python.testing.unittestEnabled": false,
+ "python.testing.pytestEnabled": true,
+ "sqltools.connections": [
+    {
+        "connId": 3135,
+        "role": "snowpark_analysis_role",
+        "driver": "Snowflake",
+        "name": "demodbConnection",
+        "account": "mobilize",
+        "username": "U2FsdGVkX1838iqVimQ6EcMQ75spGRbKbaxdwTTSJltM2v/5amY1hsreOec6zAgS",
+        "password": "U2FsdGVkX18b5ZL19vw4hoDLyE0EmzEUnrZUmbgnQpc=",
+        "database": "snowpark_extensions_tests",
+        "warehouse": "snowpark_analysis_wh",
+        "schema": "public"
+    }
+],
+ "sqltools.defaultConnId": 3135
 }
